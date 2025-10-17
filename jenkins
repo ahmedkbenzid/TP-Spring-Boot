@@ -1,0 +1,34 @@
+pipeline{
+  agent any
+  Tools{
+    maven 'mymaven'
+  }
+  stages{
+    stage('checkout code')
+    {
+      steps {
+        git branch: 'master', url: 'https://github.com/ahmedkbenzid/TP-Spring-Boot.git'
+      }
+    }
+    stage('compile, test code, packege in war file and store it in maven repo')
+    {
+      steps {
+        sh 'mvn clean install'
+      }
+      post{
+        success {
+          junit allowEmptyResults: true, testResults: '**/target/sunfire-reports/*.xml'
+        }
+      }
+    }
+    stage('SonarQube analysis')
+    {
+      steps {
+        withSonarQubeEnv(installationName: 'MySonarQubeServer', credentialID: 'Devops2025@ensi'){
+          sh "mvn sonar:sonar -Dsonar.projectKey=country-service -Dsonar.projectName='country-service’ -Dsonar.host.url=http://localhost:9000 -Dsonar.token=squ_92d47bb11f31b9b2b5611f53f0a9d3f4f11fb5cb"
+        }
+      }
+    }
+  }
+}
+    
