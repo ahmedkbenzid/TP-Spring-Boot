@@ -17,7 +17,7 @@ pipeline{
       }
       post{
         success {
-          junit allowEmptyResults: true, testResults: '**/target/sunfire-reports/*.xml'
+          junit allowEmptyResults: true, testResults: '**/target/surefire-reports/*.xml'
         }
       }
     }
@@ -25,7 +25,7 @@ pipeline{
     {
       steps {
         withSonarQubeEnv(installationName: 'MySonarQubeServer', credentialsId: 'Devops2025@ensi'){
-          sh "mvn sonar:sonar -Dsonar.projectKey=country-service -Dsonar.projectName='country-service’ -Dsonar.host.url=http://localhost:9000 -Dsonar.token=squ_92d47bb11f31b9b2b5611f53f0a9d3f4f11fb5cb"
+          sh "mvn sonar:sonar -Dsonar.projectKey=country-service -Dsonar.projectName='country-service' -Dsonar.host.url=http://localhost:9000 -Dsonar.token=squ_92d47bb11f31b9b2b5611f53f0a9d3f4f11fb5cb"
         }
       }
     }
