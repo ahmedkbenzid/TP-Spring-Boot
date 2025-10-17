@@ -1,6 +1,6 @@
 pipeline{
   agent any
-  Tools{
+  tools{
     maven 'mymaven'
   }
   stages{
@@ -24,7 +24,7 @@ pipeline{
     stage('SonarQube analysis')
     {
       steps {
-        withSonarQubeEnv(installationName: 'MySonarQubeServer', credentialID: 'Devops2025@ensi'){
+        withSonarQubeEnv(installationName: 'MySonarQubeServer', credentialsId: 'Devops2025@ensi'){
           sh "mvn sonar:sonar -Dsonar.projectKey=country-service -Dsonar.projectName='country-service’ -Dsonar.host.url=http://localhost:9000 -Dsonar.token=squ_92d47bb11f31b9b2b5611f53f0a9d3f4f11fb5cb"
         }
       }
