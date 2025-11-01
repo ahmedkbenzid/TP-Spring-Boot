@@ -25,7 +25,7 @@ pipeline{
     {
       steps {
         withSonarQubeEnv(installationName: 'MySonarQubeServer', credentialsId: 'Devops2025@ensi'){
-          sh "mvn sonar:sonar -Dsonar.projectKey=country-service -Dsonar.projectName='country-service’ -Dsonar.host.url=http://localhost:9000 -Dsonar.token=sqp_11bd1f69adb58a57ce23aa77e23f3d4a49e9b5c9"
+          sh "mvn sonar:sonar -Dsonar.projectKey=country-service -Dsonar.projectName='country-service' -Dsonar.host.url=http://localhost:9000 -Dsonar.token=sqp_11bd1f69adb58a57ce23aa77e23f3d4a49e9b5c9"
         }
       }
     }
