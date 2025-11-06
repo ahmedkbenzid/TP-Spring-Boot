@@ -14,7 +14,7 @@
   - name: Log in Docker Hub
     community.general.docker_login:
       username: "{{docker_registry_username}}"
-      password: "{{docker_registry_passwoed}}"
+      password: "{{docker_registry_password}}"
       reauthorize: yes
 
   - name: Build Docker image
