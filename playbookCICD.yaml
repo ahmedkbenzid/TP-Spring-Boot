@@ -21,10 +21,10 @@ tasks:
   docker_image:
     build:
       path: "{{dockerfile_path}}"
-    name: "{{docker_registry_username}}/{{image_name}}:{{image_tag}}
+    name: "{{docker_registry_username}}/{{image_name}}:{{image_tag}}"
     source: build
     state: present
-    tag: "{{image_tag}}
+    tag: "{{image_tag}}"
 
 - name: Push the Docker image to Docker Hub
   docker_image:
