@@ -27,6 +27,7 @@ The main goal of this project is to gain hands-on experience with:
 - **Version Control**: Git
 
 ## Project Structure
+```text
 TP-Spring-Boot/ ├── src/ # Spring Boot application source code 
                 ├── Dockerfile # Docker image configuration 
                 ├── docker-compose. yml # Multi-container Docker configuration 
@@ -39,7 +40,7 @@ TP-Spring-Boot/ ├── src/ # Spring Boot application source code
                 ├── .gitignore # Git ignore rules 
                 └── .gitattributes # Git attributes configuration
 
-
+````
 ## Getting Started
 
 ### Prerequisites
