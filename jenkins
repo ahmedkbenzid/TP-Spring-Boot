@@ -1,34 +1,52 @@
-pipeline{
-  agent any
-  tools{
-    maven 'M2_HOME'
-  }
-  stages{
-    stage('checkout code')
-    {
-      steps {
-        git branch: 'master', url: 'https://github.com/ahmedkbenzid/TP-Spring-Boot.git'
-      }
+pipeline {
+    agent any
+    tools {
+        maven 'M2_HOME'
     }
-    stage('compile, test code, packege in war file and store it in maven repo')
-    {
-      steps {
-        sh 'mvn clean install'
-      }
-      post{
+    stages {
+        stage('Checkout code')
+        {
+            steps {
+                git branch: 'master', url: 'https://github.com/ahmedkbenzid/TP-Spring-Boot.git'
+            }
+        }
+        stage('Build maven')
+        {
+            steps {
+                sh 'mvn clean install'
+            }
+            post{
+                success {
+                    junit allowEmptyResults: true, testResults: '**/target/sunfire-reports/*.xml'
+                }
+            }
+        }
+        stage('SonarQube analysis')
+        {
+            steps {
+                withSonarQubeEnv(installationName: 'MySonarQubeServer', credentialsId: 'Devops2025@ensi'){
+                    sh "mvn sonar:sonar -Dsonar.projectKey=country-service -Dsonar.projectName='country-service’ -Dsonar.host.url=http://localhost:9000 -Dsonar.token=squ_92d47bb11f31b9b2b5611f53f0a9d3f4f11fb5cb"
+                }
+            }
+        }
+        stage('Deploy using Ansible playbook') {
+            steps {
+                script {
+                    sh 'ansible-playbook -i hosts playbookCICD.yaml'
+                }
+            }
+        }
+    }
+    post {
+        always {
+            // Clean up or perform post-build actions
+            cleanWs ()
+        }
         success {
-          junit allowEmptyResults: true, testResults: '**/target/sunfire-reports/*.xml'
+            echo 'Ansible playbook executed successfully!'
         }
-      }
-    }
-    stage('SonarQube analysis')
-    {
-      steps {
-        withSonarQubeEnv(installationName: 'MySonarQubeServer', credentialsId: 'Devops2025@ensi'){
-          sh "mvn sonar:sonar -Dsonar.projectKey=country-service -Dsonar.projectName='country-service' -Dsonar.host.url=http://localhost:9000 -Dsonar.token=sqp_11bd1f69adb58a57ce23aa77e23f3d4a49e9b5c9"
+        failure {
+            echo 'Ansible playbook execution failed!'
         }
-      }
     }
-  }
 }
-    
